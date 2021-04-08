@@ -18,20 +18,20 @@ def get_augumentation(phase, width=512, height=512, min_area=0., min_visibility=
                 width=width, p=0.3),
             albu.augmentations.transforms.Flip(),
             albu.augmentations.transforms.Transpose(),
-            albu.OneOf([
-                albu.RandomBrightnessContrast(brightness_limit=0.5,
-                                              contrast_limit=0.4),
-                albu.RandomGamma(gamma_limit=(50, 150)),
-                albu.NoOp()
-            ]),
-            albu.OneOf([
-                albu.RGBShift(r_shift_limit=20, b_shift_limit=15,
-                              g_shift_limit=15),
-                albu.HueSaturationValue(hue_shift_limit=5,
-                                        sat_shift_limit=5),
-                albu.NoOp()
-            ]),
-            albu.CLAHE(p=0.8),
+#             albu.OneOf([
+#                 albu.RandomBrightnessContrast(brightness_limit=0.5,
+#                                               contrast_limit=0.4),
+#                 albu.RandomGamma(gamma_limit=(50, 150)),
+#                 albu.NoOp()
+#             ]),
+#             albu.OneOf([
+#                 albu.RGBShift(r_shift_limit=20, b_shift_limit=15,
+#                               g_shift_limit=15),
+#                 albu.HueSaturationValue(hue_shift_limit=5,
+#                                         sat_shift_limit=5),
+#                 albu.NoOp()
+#             ]),
+#             albu.CLAHE(p=0.8),
             albu.HorizontalFlip(p=0.5),
             albu.VerticalFlip(p=0.5),
         ])
@@ -40,8 +40,8 @@ def get_augumentation(phase, width=512, height=512, min_area=0., min_visibility=
             albu.Resize(height=height, width=width)
         ])
     list_transforms.extend([
-        albu.Normalize(mean=(0.485, 0.456, 0.406),
-                       std=(0.229, 0.224, 0.225), p=1),
+        albu.Normalize(mean=(0.1725, 0.1525, 0.0000),
+                       std=(0.0839, 0.0352, 1), p=1),
         ToTensor()
     ])
     if(phase == 'test'):
@@ -142,7 +142,7 @@ class Normalizer(object):
 
     def __init__(self):
         self.mean = np.array([[[0.1725, 0.1525, 0.0000]]])
-        self.std = np.array([[[0.0839, 0.0352, 0.225]]])
+        self.std = np.array([[[0.0839, 0.0352, 1]]])
 
     def __call__(self, sample):
         image, annots = sample['img'], sample['annot']
